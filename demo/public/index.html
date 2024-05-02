@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hello, world!</title>
+    <script src="https://unpkg.com/@flatfile/javascript@1.2.2/dist/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+    <script src="env.js"></script>
+
+    <script>
+      console.log(window.FLATFILE_PUBLISHABLE_KEY)
+      window.onload = function () {
+        FlatFileJavaScript.startFlatfile({
+          publishableKey: window.FLATFILE_PUBLISHABLE_KEY,
+          spaceBody: {
+            namespace: "example-import",
+          },
+          onSubmit: async ({ sheet }) => {
+            const data = await sheet.allData();
+            console.log("onSubmit", data);
+          },
+          onRecordHook: (record) => {
+            const firstName = record.get("first_name");
+            console.log({ firstName });
+            record.set("last_name", "Rock");
+            return record;
+          },
+          themeConfig: {
+            root: {
+              primaryColor: "red",
+              textColor: "white",
+              logo: "https://images.ctfassets.net/hjneo4qi4goj/gL6Blz3kTPdZXWknuIDVx/7bb7c73d93b111ed542d2ed426b42fd5/flatfile.svg",
+            },
+          },
+        });
+      };
+    </script>
+  </head>
+</html>
